@@ -4,6 +4,7 @@ BLACK = (0, 0, 0)
 GRAY = (32, 32, 32)
 WHITE = (255, 255, 255)
 
+
 def show_grid(grid):
     for x in range(SIZE):
         for y in range(SIZE):
@@ -13,31 +14,6 @@ def show_grid(grid):
                                SQUARE_SIZE//1.02, SQUARE_SIZE//1.02)
             pygame.draw.rect(SCREEN, colour, rect)
 
-def configure():
-    config = False
-    inp_valid = False
-    while not inp_valid:
-        config_inp = input("Would you like to configure the grid/window sizes (y/n)? ")
-        if config_inp.lower() == 'y':
-            inp_valid = True
-            config = True
-        elif config_inp.lower() == 'n':
-            inp_valid = True
-        else:
-            print("Invalid input - please select y/n.")
-    
-    if config:
-        inp_valid = False
-        while not inp_valid:
-            size_inp = int(input("Grid size: "))
-            win_size_inp = int(input("Window size: "))
-            if size_inp > 0 and win_size_inp > 0:
-                inp_valid = True
-                return size_inp, win_size_inp
-            else:
-                print("Invalid input - please select integer values greater than zero.")
-    else:
-        return 15, 600
 
 def square_clicked(pos):
     x = round(pos[0], 1)//SQUARE_SIZE
@@ -70,6 +46,34 @@ def update_grid():
                     grid[x][y] = True
 
 
+def configure():
+    config = False
+    inp_valid = False
+    while not inp_valid:
+        config_inp = input(
+            "Would you like to configure the grid/window sizes (y/n)? ")
+        if config_inp.lower() == 'y':
+            inp_valid = True
+            config = True
+        elif config_inp.lower() == 'n':
+            inp_valid = True
+        else:
+            print("Invalid input - please select y/n.")
+
+    if config:
+        inp_valid = False
+        while not inp_valid:
+            size_inp = int(input("Grid size: "))
+            win_size_inp = int(input("Window size: "))
+            if size_inp > 0 and win_size_inp > 0:
+                inp_valid = True
+                return size_inp, win_size_inp
+            else:
+                print("Invalid input - please select integer values greater than zero.")
+    else:
+        return 15, 600
+
+
 if __name__ == "__main__":
     print("""
     === Conway's Game of Life ===
@@ -79,23 +83,22 @@ if __name__ == "__main__":
         Space: Step through incrementally (while paused)
         Up/Down arrows: Increase/Decrease FPS (while playing)
     """)
-    
+
     global SIZE, WINDOW_SIZE
     SIZE, WINDOW_SIZE = configure()
-    
+
     global SQUARE_SIZE
     SQUARE_SIZE = WINDOW_SIZE // SIZE
 
-    
     global SCREEN, CLOCK
     pygame.init()
     SCREEN = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE))
     CLOCK = pygame.time.Clock()
-    
+
     SCREEN.fill(BLACK)
-    
+
     grid = [[False for x in range(SIZE)] for y in range(SIZE)]
-    
+
     play = False
     fps = 30
     while True:
